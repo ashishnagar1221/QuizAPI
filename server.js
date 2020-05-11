@@ -22,5 +22,5 @@ app.get('/',(req,res)=>{
     res.send("HEllo wORld")
 })
 app.listen(3600 || process.env.PORT,()=>{
-    console.log(`Server started at : ${PORT}`)
+    console.log(`Server started`)
 })
