@@ -23,6 +23,7 @@ router.post('/addTopics',(req,res) =>{
 
 router.post('/addQuestion',(req,res)=>{
     const {question,options,answer,topic} = req.body;
+    console.log(req.body)
     if(!question || !options|| !answer || !topic){
         return res.status(422).json({error:"please add all the fields"})
     }
@@ -81,18 +82,33 @@ router.get('/topic',(req,res) =>{
     })
 })
 
-
-//Doubt part
-
 router.get('/gameStart',(req,res) => {
-    console.log(req.body.topic)
     Ques.find(
         {topic:req.body.topic}
-         //{$sample: {size: 5}} 
       ).limit(5)
+      .select({"question":1,"options":1})
       .then(quiz =>{
-          console.log(quiz)
           res.json(quiz)
       })
+})
+
+router.post('/result',requireLogin,(req,res) =>{
+    let userscopy = req.body
+    let score = 0
+    let tally = []
+    for(let n in userscopy){
+        //console.log(userscopy[n].ques)
+        tally.push(userscopy[n])
+        Ques.findById(userscopy[n].ques)
+        .then(result =>{
+            if(result.answer == userscopy[n].ans){
+                score++
+                console.log(score)
+
+            }else{
+                console.log("NOT correct")
+            }
+        }) 
+    }
 })
 module.exports = router;
