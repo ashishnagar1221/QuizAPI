@@ -84,7 +84,16 @@ router.get('/topic',(req,res) =>{
 
 //Doubt part
 
-router.get('/gameStart/:topicID',(req,res) => {
-    let topicID = req.params
+router.get('/gameStart',(req,res) => {
+    // 
+    // console.log(topicID)
+    Ques.aggregate([
+        {$match: {topic:req.body.topic}}, 
+         {$sample: {size: 5}} 
+      ])
+      .then(quiz =>{
+          console.log(quiz)
+          res.json(quiz)
+      })
 })
 module.exports = router;

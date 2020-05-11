@@ -1,4 +1,4 @@
 module.exports ={
-   URI:"mongodb://127.0.0.1:27017/Quizera",
+   URI:"mongodb+srv://user:root@taramandal-puhil.mongodb.net/Quizera?retryWrites=true&w=majority",
    JWT:"qwaszxerfdvc"
 }
