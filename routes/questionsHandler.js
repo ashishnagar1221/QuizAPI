@@ -85,12 +85,11 @@ router.get('/topic',(req,res) =>{
 //Doubt part
 
 router.get('/gameStart',(req,res) => {
-    // 
-    // console.log(topicID)
-    Ques.aggregate([
-        {$match: {topic:req.body.topic}}, 
-         {$sample: {size: 5}} 
-      ])
+    console.log(req.body.topic)
+    Ques.find(
+        {topic:req.body.topic}
+         //{$sample: {size: 5}} 
+      ).limit(5)
       .then(quiz =>{
           console.log(quiz)
           res.json(quiz)
