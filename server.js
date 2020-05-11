@@ -23,6 +23,6 @@ app.use(require('./routes/userhandler'))
 app.get('/',(req,res)=>{
     res.send("HEllo wORld")
 })
-app.listen(PORT,()=>{
+app.listen(PORT || process.env.PORT,()=>{
     console.log(`Server started at : ${PORT}`)
 })
