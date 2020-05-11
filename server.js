@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const {URI} = require('./keys')
 
 const app = express();
-
+const PORT = process.env.PORT || 3600;
 mongoose.connect(URI,
         {
             useNewUrlParser: true,
@@ -21,6 +21,6 @@ app.use(require('./routes/userhandler'))
 app.get('/',(req,res)=>{
     res.send("HEllo wORld")
 })
-app.listen(3600 || process.env.PORT,()=>{
+app.listen(PORT,()=>{
     console.log(`Server started`)
 })
