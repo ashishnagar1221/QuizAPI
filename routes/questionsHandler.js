@@ -115,7 +115,6 @@ router.post('/result',requireLogin,(req,res) =>{
             score,
             answerTally:tally
         })
-
         newQuiz.save()
         .then(result =>{
             console.log(score)
