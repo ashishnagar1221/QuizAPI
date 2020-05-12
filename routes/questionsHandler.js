@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Ques = require("../models/questions")
 const Topics = require('../models/Topics')
+const Quiz = require('../models/Quizs')
 const requireLogin  = require("../middleware/token")
 
 router.post('/addTopics',(req,res) =>{
@@ -104,14 +105,25 @@ router.post('/result',requireLogin,(req,res) =>{
             if(result.answer == userscopy[n].ans){
                 score++
                 //console.log(score)
-
             }else{
                 //console.log("NOT correct")
             }
         }) 
     }
-    
+        const newQuiz = new Quiz({
+            attemptBy:req.user._id,
+            score,
+            answerTally:tally
+        })
 
-    console.log(score)
+        newQuiz.save()
+        .then(result =>{
+            console.log(score)
+            res.json("Result have been uploded")
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+    //console.log(score)
 })
 module.exports = router;

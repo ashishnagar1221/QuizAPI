@@ -18,6 +18,6 @@ const UserSchema  = new mongoose.Schema({
     ]
 })
 
-const Topics = mongoose.model('Topics',UserSchema);
+const Quiz = mongoose.model('Quiz',UserSchema);
 
-module.exports = Topics;
+module.exports = Quiz;
