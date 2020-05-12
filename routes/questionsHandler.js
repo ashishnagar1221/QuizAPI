@@ -103,12 +103,15 @@ router.post('/result',requireLogin,(req,res) =>{
         .then(result =>{
             if(result.answer == userscopy[n].ans){
                 score++
-                console.log(score)
+                //console.log(score)
 
             }else{
-                console.log("NOT correct")
+                //console.log("NOT correct")
             }
         }) 
     }
+    
+
+    console.log(score)
 })
 module.exports = router;
