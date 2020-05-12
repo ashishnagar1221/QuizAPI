@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router();
 const Ques = require("../models/questions")
 const Topics = require('../models/Topics')
+const Quiz = require('../models/Quizs')
 const requireLogin  = require("../middleware/token")
 
 router.post('/addTopics',(req,res) =>{
@@ -92,26 +93,33 @@ router.get('/gameStart',(req,res) => {
       })
 })
 
-router.post('/result',requireLogin,(req,res) =>{
-    let userscopy = req.body
-    let score = 0
-    let tally = []
-    for(let n in userscopy){
-        //console.log(userscopy[n].ques)
-        tally.push(userscopy[n])
-        Ques.findById(userscopy[n].ques)
-        .then(result =>{
-            if(result.answer == userscopy[n].ans){
-                score++
-                //console.log(score)
+// router.post('/result',requireLogin,(req,res) =>{
+//     let userscopy = req.body
+//     let score = 0
+//     let tally = []
+//     for(let n in userscopy){
+//         tally.push(userscopy[n])
+//         Ques.findById(userscopy[n].ques)
+//         .then(result =>{
+//             if(result.answer == userscopy[n].ans){
+//                 score++
+//             }
+//         })
+//     }
 
-            }else{
-                //console.log("NOT correct")
-            }
-        }) 
-    }
-    
+//         const newQuiz = new Quiz({
+//             attemptBy:req.user._id,
+//             score,
+//             answerTally:tally
+//         })
 
-    console.log(score)
-})
+//         newQuiz.save()
+//         .then(result =>{
+//             console.log(score)
+//             res.json("Result have been uploded")
+//         })
+//         .catch(err=>{
+//             console.log(err)
+//         })
+// })
 module.exports = router;
