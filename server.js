@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+var cors = require('cors')
 const {URI} = require('./keys')
 
 const app = express();
+app.use(cors())
+
 const PORT = process.env.PORT || 3600;
 mongoose.connect(URI,
         {

@@ -3,6 +3,7 @@ const router = express.Router();
 const Ques = require("../models/questions")
 const Topics = require('../models/Topics')
 const Quiz = require('../models/Quizs')
+const User = require('../models/Users')
 const requireLogin  = require("../middleware/token")
 
 router.post('/addTopics',(req,res) =>{
@@ -98,8 +99,8 @@ router.post('/result',requireLogin,(req,res) =>{
     let score = 0
     let tally = []
     for(let n in userscopy){
-        //console.log(userscopy[n].ques)
-        tally.push(userscopy[n])
+        //console.log(userscopy[n])
+        tally.push({quesID:userscopy[n].ques,marked_choice:userscopy[n].ans})
         Ques.findById(userscopy[n].ques)
         .then(result =>{
             if(result.answer == userscopy[n].ans){
@@ -115,14 +116,17 @@ router.post('/result',requireLogin,(req,res) =>{
             score,
             answerTally:tally
         })
+
         newQuiz.save()
-        .then(result =>{
-            console.log(score)
+           .then(result =>{
+            console.log(result._id)
+            User.findByIdAndUpdate(req.user._id,{$push :{quiz_attempted:result._id}} ,{ new: true })
             res.json("Result have been uploded")
         })
         .catch(err=>{
             console.log(err)
         })
     //console.log(score)
+    //No update in score while sending to DB ... Getting Score = 0 
 })
 module.exports = router;

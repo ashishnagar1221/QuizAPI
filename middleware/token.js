@@ -5,7 +5,7 @@ const User = mongoose.model('User')
 module.exports = (req,res,next)=>{
     const {authorization} = req.headers
     if(!authorization){
-        return res.status(401).json({error:"Loggin to access content"})
+        return res.status(401).json({error:"Loggin to access content (token passed)"})
     }
     const token = authorization.replace("Bearer ","")
     jwt.verify(token,JWT,(err,data)=>{
