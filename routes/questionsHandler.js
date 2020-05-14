@@ -67,7 +67,18 @@ router.get('/allquestions',(req,res)=>{
 router.get('/alltopic',(req,res) =>{
     Topics.find()
     .then(topic =>{
-        res.json(topic)
+        //console.log(topic)
+        let groupByCategory = topic.reduce((obj,item)=>{
+            obj[item.category] = obj[item.category] || []
+            obj[item.category].push(item)
+            return obj
+        },[]);
+
+        let groups = Object.keys(groupByCategory).map((key) =>{
+            return{category:key,item:groupByCategory[key]}
+        })
+        //console.log(groups)
+        res.json(groups)
     })
     .catch(err =>{
         console.log(err)
@@ -94,23 +105,21 @@ router.get('/gameStart',(req,res) => {
       })
 })
 
-router.post('/result',requireLogin,(req,res) =>{
+
+router.post('/result',requireLogin,async (req,res) =>{
     let userscopy = req.body
     let score = 0
     let tally = []
-    for(let n in userscopy){
-        //console.log(userscopy[n])
-        tally.push({quesID:userscopy[n].ques,marked_choice:userscopy[n].ans})
-        Ques.findById(userscopy[n].ques)
-        .then(result =>{
-            if(result.answer == userscopy[n].ans){
+    let db = await Ques.find()
+    userscopy.map(ele => {
+        tally.push({quesID:ele.ques,marked_choice:ele.ans})
+        db.map(e => {
+            if(ele.ques == e._id && ele.ans == e.answer ){
                 score++
-                //console.log(score)
-            }else{
-                //console.log("NOT correct")
             }
         }) 
-    }
+    })
+
         const newQuiz = new Quiz({
             attemptBy:req.user._id,
             score,
@@ -119,14 +128,11 @@ router.post('/result',requireLogin,(req,res) =>{
 
         newQuiz.save()
            .then(result =>{
-            console.log(result._id)
-            User.findByIdAndUpdate(req.user._id,{$push :{quiz_attempted:result._id}} ,{ new: true })
-            res.json("Result have been uploded")
+            User.findByIdAndUpdate(req.user._id,{$push:{quiz_attempted:result._id}},(err,doc) =>{})
+            res.json(result) 
         })
         .catch(err=>{
             console.log(err)
         })
-    //console.log(score)
-    //No update in score while sending to DB ... Getting Score = 0 
 })
 module.exports = router;
