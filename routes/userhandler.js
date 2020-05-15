@@ -56,18 +56,23 @@ router.get('/followedTopic',requireLogin,(req,res) =>{
 })
 
 
-router.get('/userprofile',requireLogin,(req,res) =>{
+router.get('/userprofile',requireLogin,async (req,res) =>{
     const tnaame = []
+    let db = await topics.find()
+
     User.findById(req.user._id)
     .then(user =>{
-        user.topic_followed.map(item =>{
-            topics.findById(item)
-            .then(data =>{
-                //console.log(data.name)
-                tnaame.push(data.name)
-            })  
+        //console.log(user.topic_followed)
+         user.topic_followed.map(item =>{
+            // console.log("user: "+item._id)
+           db.map (ele =>{
+               if(item._id == ele.id){
+                tnaame.push(ele.name)
+                console.log("ele: "+ele.name)   
+               }
+           }) 
         })
-        console.log(tnaame)///getting empty array expected to get name of topic user follows
+        console.log(tnaame)///getting empty array expected to get name of topic user follows---RESOLVED
         const {_id,name,email,topic_followed,quiz_attempted} = user
         res.json({tnaame,user:{_id,name,email,topic_followed,quiz_attempted}})
     }) 
