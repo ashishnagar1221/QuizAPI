@@ -68,13 +68,13 @@ router.get('/userprofile',requireLogin,async (req,res) =>{
            db.map (ele =>{
                if(item._id == ele.id){
                 tnaame.push(ele.name)
-                console.log("ele: "+ele.name)   
+                //console.log("ele: "+ele.name)   
                }
            }) 
         })
-        console.log(tnaame)///getting empty array expected to get name of topic user follows---RESOLVED
+        //console.log(tnaame)///getting empty array expected to get name of topic user follows---RESOLVED
         const {_id,name,email,topic_followed,quiz_attempted} = user
-        res.json({tnaame,user:{_id,name,email,topic_followed,quiz_attempted}})
+        res.json({_id,name,email,topic_followed,quiz_attempted,tnaame})
     }) 
     .catch(err =>{
         console.log(err)
