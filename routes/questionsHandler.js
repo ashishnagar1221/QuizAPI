@@ -85,7 +85,7 @@ router.get('/alltopic',(req,res) =>{
     })
 })
 
-router.get('/topic',(req,res) =>{
+router.post('/topic',(req,res) =>{
     Topics.findById(req.body._id)
     .then(topic =>{
         res.json(topic)
