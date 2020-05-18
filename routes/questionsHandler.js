@@ -95,11 +95,11 @@ router.post('/topic',(req,res) =>{
     })
 })
 
-router.get('/gameStart',(req,res) => {
+router.post('/gameStart',(req,res) => {
     Ques.find(
         {topic:req.body.topic}
       ).limit(5)
-      .select({"question":1,"options":1})
+      //.select({"question":1,"options":1})
       .then(quiz =>{
           res.json(quiz)
       })
