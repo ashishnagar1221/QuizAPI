@@ -51,7 +51,6 @@ router.post('/addQuestion',(req,res)=>{
 
 })
 
-
 router.get('/allquestions',(req,res)=>{
     Ques.find()
     .then(ques =>{
@@ -62,7 +61,6 @@ router.get('/allquestions',(req,res)=>{
     })
 
 })
-
 
 router.get('/alltopic',(req,res) =>{
     Topics.find()
@@ -95,7 +93,7 @@ router.post('/topic',(req,res) =>{
     })
 })
 
-router.post('/gameStart',(req,res) => {
+router.post('/gameStart',(req,res) => { 
     Ques.find(
         {topic:req.body.topic}
       ).limit(5)
@@ -104,7 +102,6 @@ router.post('/gameStart',(req,res) => {
           res.json(quiz)
       })
 })
-
 
 router.post('/result',requireLogin,async (req,res) =>{
     let userscopy = req.body
@@ -135,4 +132,5 @@ router.post('/result',requireLogin,async (req,res) =>{
             console.log(err)
         })
 })
+
 module.exports = router;

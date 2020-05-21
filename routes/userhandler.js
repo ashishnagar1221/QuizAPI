@@ -6,7 +6,6 @@ const topics = require('../models/Topics')
 const requireLogin  = require("../middleware/token")
 
 router.put('/follow',requireLogin,(req,res) =>{
-     //console.log(req.body )
     topics.findByIdAndUpdate(req.body.followId,{
         $push:{followedBy:req.user._id}
     },{
@@ -74,7 +73,13 @@ router.get('/userprofile',requireLogin,async (req,res) =>{
         })
         //console.log(tnaame)///getting empty array expected to get name of topic user follows---RESOLVED
         const {_id,name,email,topic_followed,quiz_attempted} = user
-        res.json({_id,name,email,topic_followed,quiz_attempted,tnaame})
+        res.json({"_id":_id,
+                    "name":name,
+                    "email":email,
+                    "topic_followed":topic_followed,
+                    "quiz_attempted":quiz_attempted,
+                    "tnaame":tnaame
+                })
     }) 
     .catch(err =>{
         console.log(err)
