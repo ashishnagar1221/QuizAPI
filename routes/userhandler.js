@@ -6,43 +6,44 @@ const topics = require('../models/Topics')
 const requireLogin  = require("../middleware/token")
 
 router.put('/follow',requireLogin,(req,res) =>{
-    topics.findByIdAndUpdate(req.body.followId,{
-        $push:{followedBy:req.user._id}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.json({error:err})
-        }
-        User.findByIdAndUpdate(req.user._id,{
-            $push:{topic_followed:req.body.followId}
-        },{new:true})
-        .then(result =>{
-            res.json(result)
-        }).catch(err =>{
-            return res.json({error:err})
+      if(req.user.topic_followed.includes(req.body.followId)){
+        topics.findByIdAndUpdate(req.body.followId,{
+            $pull:{followedBy:req.user._id}
+        },{
+            new:true
+        },(err,result)=>{
+            if(err){
+                return res.json({error:err})
+            }
+            User.findByIdAndUpdate(req.user._id,{
+                $pull:{topic_followed:req.body.followId}
+            },{new:true})
+            .then(result =>{
+                res.json("Unfollowed")
+            }).catch(err =>{
+                return res.json({error:err})
+            })
         })
-    })
-})
-
-router.put('/unfollow',requireLogin,(req,res) =>{
-    topics.findByIdAndUpdate(req.body.followId,{
-        $pull:{followedBy:req.user._id}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.json({error:err})
-        }
-        User.findByIdAndUpdate(req.user._id,{
-            $pull:{topic_followed:req.body.followId}
-        },{new:true})
-        .then(result =>{
-            res.json(result)
-        }).catch(err =>{
-            return res.json({error:err})
-        })
-    })
+     }
+    else{
+        topics.findByIdAndUpdate(req.body.followId,{
+                $push:{followedBy:req.user._id}
+            },{
+                new:true
+            },(err,result)=>{
+                if(err){
+                    return res.json({error:err})
+                }
+                User.findByIdAndUpdate(req.user._id,{
+                    $push:{topic_followed:req.body.followId}
+                },{new:true})
+                .then(result =>{
+                    res.json("Followed")
+                }).catch(err =>{
+                    return res.json({error:err})
+                })
+            })
+    }
 })
 
 router.get('/followedTopic',requireLogin,(req,res) =>{

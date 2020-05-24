@@ -93,11 +93,14 @@ router.post('/topic',(req,res) =>{
     })
 })
 
-router.post('/gameStart',(req,res) => { 
+router.post('/gameStart',async(req,res) => {
+
+    const n = await Ques.count({topic:req.body.topic})
+    const r  = Math.floor(Math.random() * n)
     Ques.find(
         {topic:req.body.topic}
       ).limit(5)
-      //.select({"question":1,"options":1})
+      .skip(r)
       .then(quiz =>{
           res.json(quiz)
       })
