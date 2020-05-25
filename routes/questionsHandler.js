@@ -107,7 +107,8 @@ router.post('/gameStart',async(req,res) => {
 })
 
 router.post('/result',requireLogin,async (req,res) =>{
-    let userscopy = req.body
+    let userscopy = req.body.user
+    //console.log(userscopy)
     let score = 0
     let tally = []
     let db = await Ques.find()
