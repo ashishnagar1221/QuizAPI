@@ -13,7 +13,9 @@ const UserSchema  = new mongoose.Schema({
     answerTally:[
         {
             quesID: String,
-            marked_choice: Number
+            question:String,
+            marked_choice: Number,
+            correct_choice:Number,
         }
     ]
 })

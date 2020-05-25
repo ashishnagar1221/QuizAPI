@@ -95,7 +95,7 @@ router.post('/topic',(req,res) =>{
 
 router.post('/gameStart',async(req,res) => {
 
-    const n = await Ques.count({topic:req.body.topic})
+    const n = await Ques.countDocuments({topic:req.body.topic})
     const r  = Math.floor(Math.random() * n)
     Ques.find(
         {topic:req.body.topic}
@@ -113,9 +113,11 @@ router.post('/result',requireLogin,async (req,res) =>{
     let tally = []
     let db = await Ques.find()
     userscopy.map(ele => {
-        tally.push({quesID:ele.ques,marked_choice:ele.ans})
+        //console.log(ele)
+        tally.push({quesID:ele.ques_id,question:ele.question,marked_choice:ele.opt, correct_choice:ele.ans})
         db.map(e => {
-            if(ele.ques == e._id && ele.ans == e.answer ){
+            //console.log(ele.ques == e._id)
+            if(ele.ques_id == e._id && ele.opt == e.answer ){
                 score++
             }
         }) 
