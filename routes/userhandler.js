@@ -3,7 +3,8 @@ const router = express.Router();
 const Ques = require("../models/questions")
 const User = require('../models/Users')
 const topics = require('../models/Topics')
-const requireLogin  = require("../middleware/token")
+const requireLogin  = require("../middleware/token");
+const Quiz = require('../models/Quizs');
 
 router.put('/follow',requireLogin,(req,res) =>{
       if(req.user.topic_followed.includes(req.body.followId)){
@@ -87,5 +88,26 @@ router.get('/userprofile',requireLogin,async (req,res) =>{
     })
 })
 
+router.get('/gamehistory',requireLogin,async(req,res) =>{
+    const games = []
+    let cur = null
+    let db = await Quiz.find()
+    User.findById(req.user._id)
+    .then(attempt=>{
+        attempt.quiz_attempted.forEach(ele =>{
+            db.map(e =>{
+                if(e.id == ele){
+                    //console.log({"id":e.id,"score":e.score,"tally":e.answerTally})
+                    cur = {"id":e.id,"score":e.score}
+                    games.push(cur)
+                }
+            })
+        })
+        res.json(games)
+    })
+    .catch(err =>{
+        console.log(err)
+    })
+})
 
 module.exports = router;
