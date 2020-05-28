@@ -9,7 +9,7 @@ const requireLogin  = require("../middleware/token")
 router.post('/addTopics',(req,res) =>{
     const {name,category,Description} = req.body;
     if(!name || !category || !Description){
-        return res.status(422).json({error:"please add all the fields"}) 
+        return res.status(422).json({error:"please add all the  fields"}) 
     }
     const newTopic = new Topics({
         name,category,Description
