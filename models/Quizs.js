@@ -6,6 +6,9 @@ const UserSchema  = new mongoose.Schema({
         type:ObjectId,
         ref:"Users"
     },
+    topic:{
+        type:String
+    },
     score:{
         type:Number,
         required:true

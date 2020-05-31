@@ -108,6 +108,7 @@ router.post('/gameStart',async(req,res) => {
 
 router.post('/result',requireLogin,async (req,res) =>{
     let userscopy = req.body.user
+    let topic = req.body.topic
     //console.log(userscopy)
     let score = 0
     let tally = []
@@ -125,6 +126,7 @@ router.post('/result',requireLogin,async (req,res) =>{
 
         const newQuiz = new Quiz({
             attemptBy:req.user._id,
+            topic,
             score,
             answerTally:tally
         })

@@ -98,7 +98,7 @@ router.get('/gamehistory',requireLogin,async(req,res) =>{
             db.map(e =>{
                 if(e.id == ele){
                     //console.log({"id":e.id,"score":e.score,"tally":e.answerTally})
-                    cur = {"id":e.id,"score":e.score}
+                    cur = {"topic":e.topic,"score":e.score}
                     games.push(cur)
                 }
             })
