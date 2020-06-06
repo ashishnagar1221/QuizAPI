@@ -1,5 +1,5 @@
 ## ISSUE/Bug
-
+### ISSUE RESOLVED
 This is link to the doubt section of [Newton School](https://my.newtonschool.co/doubts/question/s64z6jn4aa/) with my Bug.
 
 In questionHandler.js route - '/gameStart', I am trying to get 5 random questions from DB of a certain topic which is being passed from req.body.

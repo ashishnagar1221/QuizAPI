@@ -5,6 +5,9 @@ const Topics = require('../models/Topics')
 const Quiz = require('../models/Quizs')
 const User = require('../models/Users')
 const requireLogin  = require("../middleware/token")
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
 
 router.post('/addTopics',(req,res) =>{
     const {name,category,Description} = req.body;
@@ -94,23 +97,14 @@ router.post('/topic',(req,res) =>{
 })
 
 router.post('/gameStart',async(req,res) => {
-
-    // const n = await Ques.countDocuments({topic:req.body.topic})
-    // const r  = Math.floor(Math.random() * n)
-    // Ques.find(
-    //     {topic:req.body.topic}
-    //   ).limit(5)
-    //   .skip(r)
-    //   .then(quiz =>{
-    //       res.json(quiz)
-    //   })
-    Ques.aggregate([ { $sample: {size: 5}}])
-    .then(ques =>{
-        res.json(ques)
+    Ques.aggregate([{ $match: { topic: ObjectId(req.body.topic)}}])
+    .sample(5)
+    .then((ques) => {
+      res.json(ques);
     })
-    .catch(err =>{
-        console.log(err)
-    })
+    .catch((err) => {
+      console.log(err);
+    });
 })
 
 router.post('/result',requireLogin,async (req,res) =>{
